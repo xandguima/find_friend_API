@@ -13,6 +13,96 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  NGO
+  USER
+}
+
+enum AGE {
+  PUPIL
+  ADULT
+  SENIOR
+}
+
+enum SIZE {
+  SMALL
+  MEDIUM
+  BIG
+}
+
+enum ENERGY {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum INDEPENDENCE {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum Envirenment {
+  OUTDOOR
+  INDOOR
+}
+
 model User {
-  id String @id @default(uuid())
+  id            String   @id @default(uuid())
+  name          String
+  email         String   @unique
+  password_hash String
+  role          Role?     @default(USER)
+  cep           Int?
+  address       String?
+  tel           Int?
+  created_at    DateTime @default(now())
+  updated_at    DateTime @default(now())
+  Pet           Pet[]
+
+  @@map("users")
+}
+
+model Pet {
+  id           String       @id @default(uuid())
+  name         String
+  description  String
+  age          AGE
+  size         SIZE
+  energy       ENERGY
+  independence INDEPENDENCE
+  envirenment  Envirenment
+  user         User         @relation(fields: [user_id], references: [id])
+  user_id      String
+  photos       Photo[]
+  requets RequestsOnPet[]
+
+  @@map("pets")
+}
+
+model Request {
+  id             String           @id @default(uuid())
+  description    String
+  pets RequestsOnPet[]
+
+  @@map("requests")
+}
+
+model RequestsOnPet {
+  pet_id       String
+  requisito_id String
+  pet          Pet     @relation(fields: [pet_id], references: [id])
+  requisito    Request @relation(fields: [requisito_id], references: [id])
+
+  @@id([pet_id, requisito_id])
+  @@map("requests_on_pets")
+}
+
+model Photo {
+  id     String @id @default(uuid())
+  url    String
+  pet    Pet    @relation(fields: [pet_id], references: [id])
+  pet_id String
+
+  @@map("photos")
 }
