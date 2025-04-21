@@ -1,0 +1,11 @@
+version: '3'
+services:
+  find-friend-pg-db:
+    image: bitnami/postgresql:15
+    environment:
+      - POSTGRESQL_PASSWORD=${POSTGRESQL_PASSWORD}
+      - POSTGRESQL_USERNAME=${POSTGRESQL_USERNAME}
+      - POSTGRESQL_DATABASE=${POSTGRESQL_DATABASE}
+    ports:
+      - "5432:5432"
+    
