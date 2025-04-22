@@ -52,10 +52,12 @@ model User {
   name          String
   email         String   @unique
   password_hash String
-  role          Role?     @default(USER)
-  cep           Int?
-  address       String?
-  tel           Int?
+  role          Role     @default(USER)
+  cep           Int
+  uf            String
+  city          String
+  address       String
+  tel           Int
   created_at    DateTime @default(now())
   updated_at    DateTime @default(now())
   Pet           Pet[]
